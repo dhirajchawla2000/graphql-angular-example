@@ -1,0 +1,18 @@
+<div class="form-group">
+  <label for="sel1">USERS:</label>
+  <select class="form-control">
+    <option value="">All</option>
+    <option *ngFor="let users of userData" value="{{users.id}}">{{users.firstName}}</option>
+  </select>
+</div>
+
+<div class="posts">
+  <div *ngFor="let posts of postData">
+    <p>{{posts.title}}</p>
+    <img src="{{posts.url}}" style="display: block;"/>
+    <div>
+      <button type="button" class="btn btn-success">Like</button>
+      <span>LIKES: {{posts.votes}}</span>
+    </div>
+  </div>
+</div>
