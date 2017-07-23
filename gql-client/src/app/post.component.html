@@ -1,14 +1,11 @@
-<form>
-<div class="form-group">
-  <label for="sel1">USERS:</label>
-  <select class="form-control">
-    <option *ngFor ="let users of data">{{users.fname}} {{users.lname}}</option>
-  </select>
+<div>
+  <div>
+    <h2>{{postObj.title}}</h2>
+    <button class="btn" (click)="onDelete()">Delete</button>
+  </div>
+  <img src="{{postObj.url}}" style="display: block;"/>
+  <div>
+    <button class="btn btn-success">Like</button>
+    <span>LIKES: {{postObj.votes}}</span>
+  </div>
 </div>
-<img/>
-<div class="form-group">
-  <label for="usr">POST :</label>
-  <input type="text" class="form-control" id="usr">
-</div>
-</form>
-<button type="button" class="btn btn-primary">Primary</button>

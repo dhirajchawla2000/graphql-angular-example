@@ -7,12 +7,5 @@
 </div>
 
 <div class="posts">
-  <div *ngFor="let posts of postData">
-    <p>{{posts.title}}</p>
-    <img src="{{posts.url}}" style="display: block;"/>
-    <div>
-      <button type="button" class="btn btn-success">Like</button>
-      <span>LIKES: {{posts.votes}}</span>
-    </div>
-  </div>
+  <post *ngFor="let postObject of postData" [postObj]="postObject"></post>
 </div>

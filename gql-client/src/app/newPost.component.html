@@ -1,0 +1,14 @@
+<form>
+<div class="form-group">
+  <label for="sel1">USERS:</label>
+  <select class="form-control">
+    <option *ngFor ="let users of data">{{users.fname}} {{users.lname}}</option>
+  </select>
+</div>
+<img/>
+<div class="form-group">
+  <label for="usr">POST :</label>
+  <input type="text" class="form-control" id="usr">
+</div>
+</form>
+<button type="button" class="btn btn-primary">Primary</button>
