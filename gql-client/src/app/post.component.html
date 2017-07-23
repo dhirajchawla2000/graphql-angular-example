@@ -5,7 +5,7 @@
   </div>
   <img src="{{postObj.url}}" style="display: block;"/>
   <div>
-    <button class="btn btn-success">Like</button>
+    <button class="btn btn-success" (click)="onLike()">Like</button>
     <span>LIKES: {{postObj.votes}}</span>
   </div>
 </div>

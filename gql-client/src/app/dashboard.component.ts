@@ -15,4 +15,12 @@ export class DashboardComponent implements OnInit {
     this.service.getPosts((data) => this.postData = data.posts);
     this.service.getUsers((data) => this.userData = data.authors);
   }
+
+  deletePost(event) {
+    this.postData = this.postData.filter(post => post.id !== event);
+  }
+
+  updatePostLike(event) {
+    this.postData.filter(post => post.id === event.id).votes = event.votes;
+  }
 }

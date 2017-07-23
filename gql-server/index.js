@@ -36,7 +36,7 @@ const typeDefs = `
   type Post {
     id: Int!
     title: String
-	url: String
+	  url: String
     author: Author
     votes: Int
   }

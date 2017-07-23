@@ -7,5 +7,6 @@
 </div>
 
 <div class="posts">
-  <post *ngFor="let postObject of postData" [postObj]="postObject"></post>
+  <post *ngFor="let postObject of postData" [postObj]="postObject"
+    (deleteComp)="deletePost($event)" (updateLike)="updatePostLike($event)"></post>
 </div>
