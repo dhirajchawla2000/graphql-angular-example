@@ -62,12 +62,15 @@ const typeDefs = `
 
   type Subscription {
     postUpvoted(id: Int!): Post
+    postDeleted(id: Int!): Post
   }
 `;
 
 const resolvers = {
   Query: {
-    posts: () => posts,
+    posts: () => {
+      return posts;
+    },
     authors: () => authors,
     post: (_, { id }) => find(posts, {id: id})
   },
@@ -91,7 +94,13 @@ const resolvers = {
       if (!post) {
         return false;
       }
-      post.votes = 0;
+      for (let i=0; i<posts.length; i++) {
+        if (posts[i].id === post.id) {
+          posts.splice(i, 1);
+          pubsub.publish('postDeleted', {postDeleted: post});
+          break;
+        }
+      }
       return true;
     }
   },
@@ -100,6 +109,12 @@ const resolvers = {
       subscribe: withFilter(() => pubsub.asyncIterator('postUpvoted'),
       (payload, args) => {
         return payload.postUpvoted.id === args.id;
+      })
+    },
+    postDeleted: {
+      subscribe: withFilter(() => pubsub.asyncIterator('postDeleted'),
+      (payload, args) => {
+        return payload.postDeleted.id === args.id;
       })
     }
   },

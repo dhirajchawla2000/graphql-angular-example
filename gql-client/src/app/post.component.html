@@ -3,7 +3,7 @@
     <h2>{{postObj.title}}</h2>
     <button class="btn" (click)="onDelete()">Delete</button>
   </div>
-  <img src="{{postObj.url}}" style="display: block;"/>
+  <img class="img-box" src="{{postObj.url}}" />
   <div>
     <button class="btn btn-success" (click)="onLike()">Like</button>
     <span>LIKES: {{postObj.votes}}</span>

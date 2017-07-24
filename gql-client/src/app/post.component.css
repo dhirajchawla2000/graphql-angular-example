@@ -1,0 +1,9 @@
+button{
+    margin: 10px 10px 10px 0;
+}
+
+.img-box{
+  display: block;
+  width: 400px;
+  height: 300px;
+}

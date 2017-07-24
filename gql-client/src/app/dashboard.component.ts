@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
   }
 
   deletePost(event) {
-    this.postData = this.postData.filter(post => post.id !== event);
+    this.postData = this.postData.filter(post => post.id !== event.id);
   }
 
   updatePostLike(event) {

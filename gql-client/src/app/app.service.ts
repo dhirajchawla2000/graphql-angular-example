@@ -1,15 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Apollo, ApolloQueryObservable } from 'apollo-angular';
-import { ApolloQueryResult } from 'apollo-client';
+import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import 'rxjs/add/operator/toPromise';
-
-interface Post {
-  id: number,
-  title: string,
-  url: string,
-  votes: number
-}
 
 @Injectable()
 export class GraphqlService {
@@ -36,6 +27,17 @@ export class GraphqlService {
   private PostDelete = gql`
     mutation PostDelete($post_id: Int!) {
       deletePost(postId: $post_id)
+    }
+  `;
+
+  private PostDeleteSubscribe = gql`
+    subscription PostDeleteSubscribe($post_id: Int!) {
+      postDeleted(id: $post_id) {
+        id
+        title
+        url
+        votes
+      }
     }
   `;
 
@@ -72,13 +74,17 @@ export class GraphqlService {
     });
   }
 
-  deletePost(id: number, callback: Function, err: Function) {
+  deletePost(id: number, callback: Function = null, err: Function = null) {
     this.apollo.mutate({ mutation: this.PostDelete, variables: { post_id: id } })
       .subscribe(({data}) => {
-        callback(data);
+        if (callback !== null) {
+          callback(data);
+        }
       },
       (error) => {
-        err(error);
+        if (err !== null) {
+          err(error);
+        }
       });
   }
 
@@ -97,8 +103,15 @@ export class GraphqlService {
   }
 
   registerLikePost(id: number, callback: Function, err: Function) {
-    this.apollo.subscribe({
+    return this.apollo.subscribe({
         query: this.PostLikeSubscribe,
+        variables: { post_id: id }
+      }).subscribe((data) => { callback(data) }, (error) => { err(error) });
+  }
+
+  registerDeletePost(id: number, callback: Function, err: Function) {
+    return this.apollo.subscribe({
+        query: this.PostDeleteSubscribe,
         variables: { post_id: id }
       }).subscribe((data) => { callback(data) }, (error) => { err(error) });
   }

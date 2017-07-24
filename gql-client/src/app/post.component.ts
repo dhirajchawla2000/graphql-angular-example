@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { GraphqlService } from './app.service';
 
 import {Post} from './post';
@@ -8,33 +8,38 @@ import {Post} from './post';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css']
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit, OnDestroy {
   @Input() postObj: Post;
   @Output() deleteComp: EventEmitter<number> = new EventEmitter();
   @Output() updateLike: EventEmitter<Post> = new EventEmitter();
 
+  private likeObserver;
+  private deleteObserver;
+
   constructor(private service: GraphqlService) {}
 
   ngOnInit() {
-    this.service.registerLikePost(this.postObj.id,
+    this.likeObserver = this.service.registerLikePost(this.postObj.id,
       (data) => {
         this.updateLike.emit(data.postUpvoted);
       },
       (error) => {
         console.log('Error: ', error);
       });
-  }
 
-  onDelete(): void {
-    this.service.deletePost(this.postObj.id,
+    this.deleteObserver = this.service.registerDeletePost(this.postObj.id,
       (data) => {
-        if (data.deletePost) {
-          this.deleteComp.emit(this.postObj.id);
-        }
+        this.deleteComp.emit(data.postDeleted);
       },
       (error) => {
         console.log('Error: ', error);
-    });
+      });
+  }
+
+  ngOnDestroy() {}
+
+  onDelete(): void {
+    this.service.deletePost(this.postObj.id);
   }
 
   onLike(): void {
